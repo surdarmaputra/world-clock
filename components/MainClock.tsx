@@ -2,11 +2,17 @@
 
 import { useGetIp } from '@/api/generated/services/default/default';
 import useClockRefetch from '@/hooks/useClockRefetch';
-import getClockData from '@/utils/getClockData';
+import getClockData, { GetClockDataResult } from '@/utils/getClockData';
 
-export default function MainClock() {
+interface MainClockProps {
+  onChange?: (clock: GetClockDataResult) => void;
+}
+
+export default function MainClock({ onChange }: MainClockProps) {
   const { data: currentTime, mutate: refetchCurrentTime } = useGetIp();
   const clockData = getClockData(currentTime);
+
+  onChange?.(clockData);
 
   useClockRefetch({
     clockData,
