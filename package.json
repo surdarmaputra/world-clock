@@ -8,6 +8,7 @@
     "api:get-spec": "curl http://worldtimeapi.org/api > api/spec.yaml",
     "api:update": "yarn api:get-spec && yarn api:generate",
     "build": "next build",
+    "build:gh-page": "BUILD_GH_PAGE=true next build && touch docs/.nojekyll",
     "dev": "next dev",
     "lint": "eslint --report-unused-disable-directives --max-warnings 0",
     "start": "next start"
