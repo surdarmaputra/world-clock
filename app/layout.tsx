@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} container mx-auto`}>
+      <body className={`${inter.className} container mx-auto p-8`}>
         <Providers>{children}</Providers>
       </body>
     </html>
