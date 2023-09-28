@@ -1,3 +1,85 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "plugins": ["@typescript-eslint", "simple-import-sort"],
+  "overrides": [
+    {
+      "files": ["**/*.config.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    }
+  ],
+  "rules": {
+    "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
+    "@typescript-eslint/member-delimiter-style": [
+      "error",
+      {
+        "multiline": {
+          "delimiter": "semi",
+          "requireLast": true
+        },
+        "singleline": {
+          "delimiter": "semi",
+          "requireLast": false
+        }
+      }
+    ],
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/semi": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "no-console": "warn",
+    "no-multi-spaces": [
+      "error",
+      {
+        "ignoreEOLComments": true,
+        "exceptions": {
+          "VariableDeclarator": true
+        }
+      }
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxBOF": 0,
+        "maxEOF": 0
+      }
+    ],
+    "no-trailing-spaces": "error",
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "react/jsx-curly-brace-presence": [
+      "error",
+      {
+        "props": "never",
+        "children": "never"
+      }
+    ],
+    "react/jsx-sort-props": "error",
+    "simple-import-sort/imports": [
+      "error",
+
+      {
+        "groups": [
+          // Custom grouping: https://github.com/lydell/eslint-plugin-simple-import-sort#custom-grouping
+          // Side effect imports.
+          ["^\\u0000"],
+          // Node.js builtins prefixed with `node:`.
+          ["^node:"],
+          // `react` and `next` related packages.
+          ["^react", "^next"],
+          // Packages
+          // Things that start with a letter (or digit or underscore), or `@` followed by a letter.
+          ["^@?\\w"],
+          // Path alias internal dependencies.
+          ["^@/?\\w"],
+          // Anything not matched in another group.
+          ["^"],
+          // Relative imports. Anything that starts with a dot.
+          ["^\\."]
+        ]
+      }
+    ],
+    "simple-import-sort/exports": "error"
+  }
 }
