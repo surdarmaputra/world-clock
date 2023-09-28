@@ -3,8 +3,11 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
+import axios from 'axios';
+
 import { Providers } from './providers';
 
+axios.defaults.baseURL = 'https://worldtimeapi.org/api';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
