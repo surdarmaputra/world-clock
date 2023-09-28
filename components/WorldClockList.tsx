@@ -5,9 +5,14 @@ import { Button } from '@nextui-org/button';
 import { useDisclosure } from '@nextui-org/modal';
 import { Tooltip } from '@nextui-org/tooltip';
 
-import { MAX_WORLD_CLOCK_COUNT } from '@/constants';
+import {
+  DISPLAYED_CLOCKS_STORAGE_KEY,
+  MAX_WORLD_CLOCK_COUNT,
+} from '@/constants';
 import ClockConfiguration from '@/types/ClockConfiguration';
 import ClockLocation from '@/types/ClockLocation';
+import getFromStorage from '@/utils/getFromStorage';
+import saveToStorage from '@/utils/saveToStorage';
 
 import ClockFormModal from './ClockFormModal';
 import WorldClock from './WorldClock';
@@ -19,29 +24,41 @@ interface WorldClockListProps {
 export default function WorldClockList({
   mainClockLocation,
 }: WorldClockListProps) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [displayedClocks, setDisplayedClocks] = useState<ClockConfiguration[]>([
-    {
-      timezone: 'Asia/Singapore',
-    },
-    {
-      timezone: 'Asia/Tokyo',
-      label: 'Next trip',
-    },
-    {
-      timezone: 'Australia/Melbourne',
-    },
-    {
-      timezone: 'America/New_York',
-    },
-  ]);
+  const {
+    isOpen: isOpenForm,
+    onOpen: onOpenForm,
+    onOpenChange: onOpenChangeForm,
+  } = useDisclosure();
+  const persistedClocks =
+    (getFromStorage(DISPLAYED_CLOCKS_STORAGE_KEY) as ClockConfiguration[]) ||
+    [];
+  const [displayedClocks, setDisplayedClocks] =
+    useState<ClockConfiguration[]>(persistedClocks);
+  const displayedTimezones: string[] = displayedClocks.map(
+    ({ timezone }) => timezone,
+  );
   const isAddButtonVisible: boolean =
     displayedClocks.length < MAX_WORLD_CLOCK_COUNT;
 
   const handleRemoveClock = (removedTimezone: string) => {
-    setDisplayedClocks((clocks) =>
-      clocks.filter((clock) => clock.timezone !== removedTimezone),
+    const updatedClocks = displayedClocks.filter(
+      (clock) => clock.timezone !== removedTimezone,
     );
+    setDisplayedClocks(updatedClocks);
+    saveToStorage(DISPLAYED_CLOCKS_STORAGE_KEY, updatedClocks);
+  };
+
+  const handleSubmitClockForm = (formData: ClockConfiguration) => {
+    const updatedClocks = [
+      ...displayedClocks,
+      {
+        timezone: formData.timezone,
+        label: formData.label,
+      },
+    ];
+    setDisplayedClocks(updatedClocks);
+    saveToStorage(DISPLAYED_CLOCKS_STORAGE_KEY, updatedClocks);
+    onOpenChangeForm();
   };
 
   return (
@@ -64,9 +81,9 @@ export default function WorldClockList({
           showArrow={true}
         >
           <Button
-            className="w-44 h-56 border-default-400 border-dashed border-1"
+            className="w-full sm:w-44 h-60 border-default-400 border-dashed border-1"
             disableRipple={true}
-            onPress={onOpen}
+            onPress={onOpenForm}
             variant="bordered"
           >
             <PlusCircleIcon className="text-default-400" />
@@ -74,7 +91,12 @@ export default function WorldClockList({
         </Tooltip>
       )}
 
-      <ClockFormModal isOpen={isOpen} onOpenChange={onOpenChange} />
+      <ClockFormModal
+        excludedTimezones={displayedTimezones}
+        isOpen={isOpenForm}
+        onOpenChange={onOpenChangeForm}
+        onSubmit={handleSubmitClockForm}
+      />
     </div>
   );
 }

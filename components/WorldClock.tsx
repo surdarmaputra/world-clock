@@ -3,6 +3,7 @@
 import { XCircleIcon } from '@heroicons/react/24/outline';
 import { Card, CardBody } from '@nextui-org/card';
 import { Chip } from '@nextui-org/chip';
+import { Spinner } from '@nextui-org/spinner';
 
 import { useGetTimezoneAreaLocation } from '@/api/generated/services/default/default';
 import useClockRefetch from '@/hooks/useClockRefetch';
@@ -23,8 +24,11 @@ export default function WorldClock({
   timezone,
 }: WorldClockProps) {
   const [area, location] = timezone.split('/');
-  const { data: currentTime, mutate: refetchCurrentTime } =
-    useGetTimezoneAreaLocation(area, location);
+  const {
+    data: currentTime,
+    isLoading: isLoadingCurrentTime,
+    mutate: refetchCurrentTime,
+  } = useGetTimezoneAreaLocation(area, location);
 
   const clockData = getClockData(currentTime);
   const timeDiffHours =
@@ -33,6 +37,7 @@ export default function WorldClock({
   const displayedTimeDiff = `${Math.abs(
     timeDiffHours,
   )} hours ${timeDiffConjunction} ${mainClockLocation.location}`;
+  const isSpinnerVisible = isLoadingCurrentTime || !clockData;
 
   useClockRefetch({
     clockData,
@@ -42,9 +47,15 @@ export default function WorldClock({
   });
 
   return (
-    <Card className="w-44 h-56 transition hover:-translate-y-1 group shadow-2xl border-default-50 border-1 shadow-default-200 overflow-visible">
-      <CardBody className="text-center flex flex-col justify-between">
-        {clockData ? (
+    <Card className="w-full sm:w-44 h-60 transition hover:-translate-y-1 group shadow-2xl border-default-50 border-1 shadow-default-200 overflow-visible">
+      <CardBody
+        className={`text-center flex flex-col items-center ${
+          isSpinnerVisible ? 'justify-center' : 'justify-between'
+        }`}
+      >
+        {isSpinnerVisible ? (
+          <Spinner size="lg" />
+        ) : (
           <>
             <h1 className="h-10">
               <div>{clockData.location}</div>
@@ -65,8 +76,6 @@ export default function WorldClock({
             </div>
             <div className="text-xs text-default-400">{displayedTimeDiff}</div>
           </>
-        ) : (
-          <div>loading</div>
         )}
       </CardBody>
       <XCircleIcon

@@ -46,3 +46,5 @@ export const CITY_OPTIONS: Record<string, string>[] = [
 });
 
 export const MAX_WORLD_CLOCK_COUNT = 4;
+
+export const DISPLAYED_CLOCKS_STORAGE_KEY = 'displayedClocks';
