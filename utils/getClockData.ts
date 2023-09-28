@@ -11,7 +11,9 @@ export default function getClockData(
   const [, location] = timezoneData.timezone.split('/');
   const [, time] = timezoneData.datetime.split('T');
   const [hours, minutes, secondsWithOffset] = time.split(':');
-  const [seconds] = secondsWithOffset.split('+');
+  const [seconds] = secondsWithOffset.includes('-')
+    ? secondsWithOffset.split('-')
+    : secondsWithOffset.split('+');
   const formattedHours = `0${hours}`.slice(-2);
   const formattedMinutes = `0${minutes}`.slice(-2);
 
@@ -20,7 +22,7 @@ export default function getClockData(
     formattedHours,
     formattedMinutes,
     hours: Number(hours),
-    location,
+    location: location.replace('_', ' '),
     minutes: Number(minutes),
     seconds: Number(seconds),
   };

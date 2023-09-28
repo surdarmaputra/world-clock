@@ -16,7 +16,7 @@ export default function MainClock() {
   });
 
   return (
-    <div className="text-center">
+    <div className="text-center mb-10 p-16">
       <h1>{clockData?.location}</h1>
       <h2 className="text-3xl font-bold">
         {clockData?.formattedHours}:{clockData?.formattedMinutes}
