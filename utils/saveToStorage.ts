@@ -1,9 +1,13 @@
+'use client';
+
 import ClockConfiguration from '@/types/ClockConfiguration';
 
 export default function saveToStorage(
   key: string,
   value: string | ClockConfiguration[],
 ) {
+  if (typeof window === 'undefined') return;
+
   let persistedValue: string;
 
   if (Array.isArray(value)) {
@@ -12,5 +16,5 @@ export default function saveToStorage(
     persistedValue = value;
   }
 
-  localStorage.setItem(key, persistedValue);
+  window.localStorage.setItem(key, persistedValue);
 }
