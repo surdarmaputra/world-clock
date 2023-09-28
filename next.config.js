@@ -2,6 +2,7 @@
 const nextConfig = {
   output: 'export',
   distDir: 'docs',
+  basePath: '/world-clock',
 };
 
 module.exports = nextConfig;
