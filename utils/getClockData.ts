@@ -16,6 +16,8 @@ export default function getClockData(
     : secondsWithOffset.split('+');
   const formattedHours = `0${hours}`.slice(-2);
   const formattedMinutes = `0${minutes}`.slice(-2);
+  const [offset] = timezoneData.utc_offset.split(':');
+  const utcOffsetHours = Number(offset || 0);
 
   return {
     abbreviation: timezoneData.abbreviation,
@@ -25,5 +27,6 @@ export default function getClockData(
     location: location.replace('_', ' '),
     minutes: Number(minutes),
     seconds: Number(seconds),
+    utcOffsetHours,
   };
 }

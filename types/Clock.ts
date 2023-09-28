@@ -6,4 +6,5 @@ export default interface Clock {
   location: string;
   minutes: number;
   seconds: number;
+  utcOffsetHours: number;
 }
