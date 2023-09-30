@@ -6,8 +6,6 @@ export default function saveToStorage(
   key: string,
   value: string | ClockConfiguration[],
 ) {
-  if (typeof window === 'undefined') return;
-
   let persistedValue: string;
 
   if (Array.isArray(value)) {

@@ -10,7 +10,7 @@ import useClockRefetch from '@/hooks/useClockRefetch';
 import ClockLocation from '@/types/ClockLocation';
 import getClockData from '@/utils/getClockData';
 
-interface WorldClockProps {
+export interface WorldClockProps {
   label?: string;
   mainClockLocation: ClockLocation;
   onRemove?: () => void;
@@ -47,14 +47,17 @@ export default function WorldClock({
   });
 
   return (
-    <Card className="w-full sm:w-44 h-60 transition hover:-translate-y-1 group shadow-2xl border-default-50 border-1 shadow-default-200 overflow-visible">
+    <Card
+      className="w-full sm:w-44 h-60 transition hover:-translate-y-1 group shadow-2xl border-default-50 border-1 shadow-default-200 overflow-visible"
+      data-testid="worldClock"
+    >
       <CardBody
         className={`text-center flex flex-col items-center ${
           isSpinnerVisible ? 'justify-center' : 'justify-between'
         }`}
       >
         {isSpinnerVisible ? (
-          <Spinner size="lg" />
+          <Spinner data-testid="spinner" size="lg" />
         ) : (
           <>
             <h1 className="h-10">
@@ -80,6 +83,7 @@ export default function WorldClock({
       </CardBody>
       <XCircleIcon
         className="text-danger-500 absolute -right-1 -top-1 cursor-pointer z-10 w-6 h-6 opacity-0 group-hover:opacity-100 transition"
+        data-testid="removeButton"
         onClick={() => onRemove?.()}
       />
     </Card>

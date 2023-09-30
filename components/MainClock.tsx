@@ -6,7 +6,7 @@ import { useGetIp } from '@/api/generated/services/default/default';
 import useClockRefetch from '@/hooks/useClockRefetch';
 import getClockData, { GetClockDataResult } from '@/utils/getClockData';
 
-interface MainClockProps {
+export interface MainClockProps {
   onChange?: (clock: GetClockDataResult) => void;
 }
 
@@ -29,9 +29,9 @@ export default function MainClock({ onChange }: MainClockProps) {
   });
 
   return (
-    <div className="text-center mb-10 p-16">
+    <div className="text-center mb-10 p-16" data-testid="mainClock">
       {isSpinnerVisible ? (
-        <Spinner size="lg" />
+        <Spinner data-testid="spinner" size="lg" />
       ) : (
         <>
           <h1 className="text-2xl mb-1">{clockData?.location}</h1>
