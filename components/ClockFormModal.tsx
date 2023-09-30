@@ -11,10 +11,12 @@ import {
   ModalHeader,
   ModalProps,
 } from '@nextui-org/modal';
-import { Select, SelectItem } from '@nextui-org/select';
+import { SelectItem } from '@nextui-org/select';
 
 import { CITY_OPTIONS } from '@/constants';
 import ClockConfiguration from '@/types/ClockConfiguration';
+
+import Select from './Select';
 
 interface ClockFormModalProps {
   excludedTimezones?: string[];
@@ -64,7 +66,6 @@ export default function ClockFormModal({
               <form className="flex flex-col gap-4" onSubmit={submitHandler}>
                 <Select
                   autoFocus
-                  disableAnimation={true}
                   errorMessage={errors?.timezone?.message}
                   isInvalid={Boolean(errors?.timezone)}
                   label="City"
