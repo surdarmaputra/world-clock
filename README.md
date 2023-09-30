@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# World Clock
+
+A simple World Clock comparator bootstrapped with Next.js, TypeScript and TailwindCSS.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node v18
+- Yarn
+
+### Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd world-clock
+yarn
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Run the development server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+yarn dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-## Learn More
+The page is auto-updated as you edit the file.
 
-To learn more about Next.js, take a look at the following resources:
+### Execute unit test:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Run all tests
+yarn test
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# Run specific tests
+yarn test src/components/__tests__/UserRepositoriesGroups.test.tsx
 
-## Deploy on Vercel
+# Run specific tests and watch for changes
+yarn test --watch src/components/__tests__/UserRepositoriesGroups.test.tsx
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Run test coverage
+yarn test:coverage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+
+### Generated API and documentation
+
+```bash
+# Update generated API hooks
+yarn api:update
+
+# Run API documentation
+yarn api:docs
+
+```
+
+## Project Convention
+
+- File naming convention:
+  - `PascalCase` for component, interface, type and enum.
+  - `camelCase` for other files including hook, utils and API hook.
+- API calls should use generated hooks located in `api/generated`. Hooks are generated using [Orval](https://orval.dev/).
+- Test files are located under `__tests__` directory on the same level as the item being tested.
+- Use [msw](https://mswjs.io/) for API testing with mocked responses configured in `__msw__/server.ts`.
+- Create one file for one type or interface in `types` directory to prevent bloated types files in the future.
+
+## References
+
+- [msw](https://mswjs.io/)
+- [Next.js](https://nextjs.org/)
+- [NextUI](https://nextui.org/)
+- [Orval](https://orval.dev/)
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+- [SWR](https://www.npmjs.com/package/swr)
+- [TailwindCSS](https://tailwindcss.com/)
