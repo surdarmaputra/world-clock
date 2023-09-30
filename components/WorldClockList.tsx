@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 import { Button } from '@nextui-org/button';
@@ -24,16 +24,15 @@ interface WorldClockListProps {
 export default function WorldClockList({
   mainClockLocation,
 }: WorldClockListProps) {
+  const initialRender = useRef<boolean>(true);
   const {
     isOpen: isOpenForm,
     onOpen: onOpenForm,
     onOpenChange: onOpenChangeForm,
   } = useDisclosure();
-  const persistedClocks =
-    (getFromStorage(DISPLAYED_CLOCKS_STORAGE_KEY) as ClockConfiguration[]) ||
-    [];
-  const [displayedClocks, setDisplayedClocks] =
-    useState<ClockConfiguration[]>(persistedClocks);
+  const [displayedClocks, setDisplayedClocks] = useState<ClockConfiguration[]>(
+    [],
+  );
   const displayedTimezones: string[] = displayedClocks.map(
     ({ timezone }) => timezone,
   );
@@ -45,7 +44,6 @@ export default function WorldClockList({
       (clock) => clock.timezone !== removedTimezone,
     );
     setDisplayedClocks(updatedClocks);
-    saveToStorage(DISPLAYED_CLOCKS_STORAGE_KEY, updatedClocks);
   };
 
   const handleSubmitClockForm = (formData: ClockConfiguration) => {
@@ -57,9 +55,28 @@ export default function WorldClockList({
       },
     ];
     setDisplayedClocks(updatedClocks);
-    saveToStorage(DISPLAYED_CLOCKS_STORAGE_KEY, updatedClocks);
     onOpenChangeForm();
   };
+
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
+
+    saveToStorage(DISPLAYED_CLOCKS_STORAGE_KEY, displayedClocks);
+  }, [displayedClocks]);
+
+  useEffect(() => {
+    const persistedClocks =
+      (getFromStorage(DISPLAYED_CLOCKS_STORAGE_KEY) as ClockConfiguration[]) ||
+      [];
+    setDisplayedClocks(persistedClocks);
+
+    return () => {
+      initialRender.current = true;
+    };
+  }, []);
 
   return (
     <div className="flex gap-6 justify-center flex-col sm:flex-row">
