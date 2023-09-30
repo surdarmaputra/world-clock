@@ -18,7 +18,7 @@ import ClockConfiguration from '@/types/ClockConfiguration';
 
 import Select from './Select';
 
-interface ClockFormModalProps {
+export interface ClockFormModalProps {
   excludedTimezones?: string[];
   isOpen?: ModalProps['isOpen'];
   onOpenChange?: ModalProps['onOpenChange'];

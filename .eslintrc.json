@@ -13,6 +13,12 @@
       "rules": {
         "@typescript-eslint/no-explicit-any": "off"
       }
+    },
+    {
+      "files": ["jest.config.mjs"],
+      "rules": {
+        "import/no-anonymous-default-export": "off"
+      }
     }
   ],
   "rules": {
